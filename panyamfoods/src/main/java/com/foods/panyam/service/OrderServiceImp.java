@@ -13,6 +13,7 @@ import com.foods.panyam.repository.IItemRepository;
 import com.foods.panyam.repository.IOrderRepository;
 import com.foods.panyam.repository.IUserRepository;
 import com.foods.panyam.response.Response;
+import com.foods.panyam.util.ResponseStatus;
 
 @Service
 public class OrderServiceImp implements IOrderService {
@@ -38,12 +39,12 @@ public class OrderServiceImp implements IOrderService {
 				
                 order.setCreationDate(new Date());
 				orderRepository.save(order);
-				return new Response(200, order, "OrderPlaces successfully");
+				return new Response(ResponseStatus.SUCCESSCODE, order, "OrderPlaces successfully");
 			} else {
-				return new Response(400, order, "Unauthorized user...");
+				return new Response(ResponseStatus.FAILURECODE, order, "Unauthorized user...");
 			}
 		} else {
-			return new Response(400, order, "Order Unsuccessfully");
+			return new Response(ResponseStatus.FAILURECODE, order, "Empty items cannot place order");
 		}
 	}
 
@@ -51,13 +52,13 @@ public class OrderServiceImp implements IOrderService {
 	public Response deleteOrder(Long id) {
 		Optional<ItemModel> item= itemRepository.findById(id);
 		itemRepository.deleteById(id);
-		return new Response(200, item, "Order Deleted successfully");
+		return new Response(ResponseStatus.SUCCESSCODE, item, "Order Deleted successfully");
 	}
 
 	@Override
 	public Response getAllOrders() {
 		
-		return new Response(200, orderRepository.findAll(), "Existed Orders showed here...");
+		return new Response(ResponseStatus.SUCCESSCODE, orderRepository.findAll(), "Existed Orders showed here...");
 	}
 
 	@Override
@@ -69,16 +70,16 @@ public class OrderServiceImp implements IOrderService {
 	    	 if(id!=null)
 	    	 {
 	    		 orderRepository.save(order);
-	    		 return new Response(200, order, "Order updated Successfully...");
+	    		 return new Response(ResponseStatus.SUCCESSCODE, order, "Order updated Successfully...");
 	    	 }
 	    	 else
 	    	 {
-	    		 return new Response(400, order, "Order id not exist in the posted body...");	 
+	    		 return new Response(ResponseStatus.FAILURECODE, order, "Order id not exist in the posted body...");	 
 	    	 }
 	     }
 	     else
 	     {
-	    	 return new Response(400, order, "Posted order body is empty...");
+	    	 return new Response(ResponseStatus.FAILURECODE, order, "Posted order body is empty...");
 	     }
 	}
 	

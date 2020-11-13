@@ -38,6 +38,13 @@ public class UsreController {
 	  return new ResponseEntity<Response>(respose, HttpStatus.OK);
 	}
 	
+	@GetMapping("/getuser")
+	public ResponseEntity<Response> getAllUsers(@RequestParam String mobileNumber)
+	{
+		Response respose = userService.getUser(mobileNumber);
+	  return new ResponseEntity<Response>(respose, HttpStatus.OK);
+	}
+	
 	@PutMapping("/updateuser")
 	public ResponseEntity<Response> updateUser(@RequestBody UserModel user)
 	{

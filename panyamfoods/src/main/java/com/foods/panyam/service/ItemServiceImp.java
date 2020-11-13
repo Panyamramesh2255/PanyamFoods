@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.foods.panyam.model.ItemModel;
 import com.foods.panyam.repository.IItemRepository;
 import com.foods.panyam.response.Response;
+import com.foods.panyam.util.ResponseStatus;
 
 @Service
 public class ItemServiceImp implements IItemService {
@@ -21,12 +22,12 @@ public class ItemServiceImp implements IItemService {
 		if(item!=null)
 		{
 			itemRepository.save(item);
-			return new Response(200, item, "Item Added Successfully..");
+			return new Response(ResponseStatus.SUCCESSCODE, item, "Item Added Successfully..");
 			
 		}
 		else
 		{
-			return new Response(400, null, "Item is null..");
+			return new Response(ResponseStatus.FAILURECODE, null, "Item is null..");
 		}
 	}
 
@@ -38,19 +39,19 @@ public class ItemServiceImp implements IItemService {
 			if(item1!=null)
 			{
 				itemRepository.save(item);
-				return new Response(200, item, "Item Added Successfully...");
+				return new Response(ResponseStatus.SUCCESSCODE, item, "Item Added Successfully...");
 				
 			}
 			else
 			{
-				return new Response(400, item, "Item with given id does not exist...");
+				return new Response(ResponseStatus.FAILURECODE, item, "Item with given id does not exist...");
 			}
 			
 			
 		}
 		else
 		{
-			return new Response(400, item, "Item Updation UnSuccessfully...");
+			return new Response(ResponseStatus.FAILURECODE, item, "Item Updation UnSuccessfully...");
 		}
 		
 	}
@@ -62,19 +63,19 @@ public class ItemServiceImp implements IItemService {
 		if(item!=null)
 		{
 			itemRepository.deleteById(id);
-			return new Response(200, item, "Item Deleted Successfully...");
+			return new Response(ResponseStatus.SUCCESSCODE, item, "Item Deleted Successfully...");
 			
 		}
 		else
 		{
-			return new Response(400, item, "Item with given id does not exist...");
+			return new Response(ResponseStatus.FAILURECODE, item, "Item with given id does not exist...");
 		}
 	}
 
 	@Override
 	public Response getAllItems() {
 		
-		return new Response(200, itemRepository.findAll(), "existed items here...");
+		return new Response(ResponseStatus.SUCCESSCODE, itemRepository.findAll(), "existed items here...");
 	}
 
 }

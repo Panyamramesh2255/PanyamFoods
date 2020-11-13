@@ -17,4 +17,6 @@ public interface IUserService {
 
 	Response deleteUser(Long id);
 
+	Response getUser(String mobileNumber);
+
 }

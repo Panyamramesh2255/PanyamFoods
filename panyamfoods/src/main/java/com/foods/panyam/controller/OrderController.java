@@ -17,7 +17,7 @@ import com.foods.panyam.response.Response;
 import com.foods.panyam.service.IOrderService;
 
 @RestController
-@RequestMapping("/oder")
+@RequestMapping("/order")
 public class OrderController {
 	
 	@Autowired

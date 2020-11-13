@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.foods.panyam.model.UserModel;
 import com.foods.panyam.repository.IUserRepository;
 import com.foods.panyam.response.Response;
+import com.foods.panyam.util.ResponseStatus;
 
 @Service
 public class UserServiceImp implements IUserService {
@@ -31,12 +32,12 @@ public class UserServiceImp implements IUserService {
 				user.setUpdationDate(new Date());
 				userRepository.save(user);
 
-				return new Response(200, user, "Registration Successfull..");
+				return new Response(ResponseStatus.SUCCESSCODE, user, "Registration Successfull..");
 			} else {
-				return new Response(202, user, "MobileNumber already exist..");
+				return new Response(ResponseStatus.FAILURECODE, user, "MobileNumber already exist..");
 			}
 		} else {
-			return new Response(400, null, "Registration Failure..");
+			return new Response(ResponseStatus.FAILURECODE, null, "Registration Failure..");
 		}
 
 	}
@@ -44,21 +45,36 @@ public class UserServiceImp implements IUserService {
 	@Override
 	public Response getAllUsers() {
 
-		return new Response(200, userRepository.findAll(), "Exited users showed here...");
+		return new Response(ResponseStatus.SUCCESSCODE, userRepository.findAll(), "Exited users showed here...");
 
 	}
 
 	@Override
 	public Response login(String mobileNumber, String password) {
 		UserModel user = userRepository.findByMobileNumber(mobileNumber);
-		if (user != null) {
-			user.setLogin(true);
-			userRepository.save(user);
-			return new Response(200, user, "Login Successfull...");
-		} else {
-			return new Response(200, user, "User does not exist...");
+		if (user != null) 
+		{
+			if(user.getPassword().contentEquals(password))
+			{
+				
+				if(user.isLogin())
+				{
+					return new Response(ResponseStatus.FAILURECODE, user, "User Already Logged in...");	
+				}
+				else
+				{
+					return new Response(ResponseStatus.SUCCESSCODE, user, "Login Successfull...");	
+				}
+			}
+			else
+			{
+				return new Response(ResponseStatus.FAILURECODE, user, "Invalid Password...");	
+			}
 		}
-
+		else
+		{
+			return new Response(ResponseStatus.FAILURECODE, user, "User does not exist...");
+		}
 	}
 
 	@Override
@@ -69,13 +85,13 @@ public class UserServiceImp implements IUserService {
 			if (user.isLogin()) {
 				user.setLogin(false);
 				userRepository.save(user);
-				return new Response(200, user, "Looout Successfull...");
+				return new Response(ResponseStatus.SUCCESSCODE, user, "Logout Successfull...");
 			} else {
-				return new Response(200, user, "Unauthorised user...");
+				return new Response(ResponseStatus.FAILURECODE, user, "Unauthorised user...");
 			}
 
 		} else {
-			return new Response(200, user, "User does not exist...");
+			return new Response(ResponseStatus.FAILURECODE, user, "User does not exist...");
 		}
 
 	}
@@ -87,13 +103,13 @@ public class UserServiceImp implements IUserService {
 			if (user1 != null) {
 				user.setUpdationDate(new Date());
 				userRepository.save(user);
-				return new Response(200, user1, "User Updated successfully...");
+				return new Response(ResponseStatus.SUCCESSCODE, user1, "User Updated successfully...");
 			} else {
-				return new Response(400, user1, "User does not exist...");
+				return new Response(ResponseStatus.FAILURECODE, user1, "User does not exist...");
 			}
 
 		} else {
-			return new Response(400, user, "Requestbody is empty...");
+			return new Response(ResponseStatus.FAILURECODE, user, "Requestbody is empty...");
 		}
 
 	}
@@ -102,7 +118,28 @@ public class UserServiceImp implements IUserService {
 	public Response deleteUser(Long id) {
 		userRepository.deleteById(id);
 
-		return new Response(200, null, "User Deleted Successfully...");
+		return new Response(ResponseStatus.SUCCESSCODE, null, "User Deleted Successfully...");
+	}
+
+	@Override
+	public Response getUser(String mobileNumber) {
+		if(mobileNumber!=null)
+		{
+			UserModel user = userRepository.findByMobileNumber(mobileNumber);
+			if(user!=null)
+			{
+				return new Response(ResponseStatus.SUCCESSCODE, user, "User Fetched Successfully...");
+			}
+			else
+			{
+				return new Response(ResponseStatus.FAILURECODE, null, "User does not exist with given Mobile Number...");
+			}
+		}
+		else
+		{
+			return new Response(ResponseStatus.FAILURECODE, null, "Mobile Number is empty...");
+		}
+		
 	}
 
 }
