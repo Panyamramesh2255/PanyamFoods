@@ -19,4 +19,6 @@ public interface IUserService {
 
 	Response getUser(String mobileNumber);
 
+	Response updateProfilePic(String mobileNumber, String profilePicture);
+
 }

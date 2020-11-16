@@ -63,6 +63,8 @@ public class UserServiceImp implements IUserService {
 				}
 				else
 				{
+					user.setLogin(true);
+					userRepository.save(user);
 					return new Response(ResponseStatus.SUCCESSCODE, user, "Login Successfull...");	
 				}
 			}
@@ -133,6 +135,36 @@ public class UserServiceImp implements IUserService {
 			else
 			{
 				return new Response(ResponseStatus.FAILURECODE, null, "User does not exist with given Mobile Number...");
+			}
+		}
+		else
+		{
+			return new Response(ResponseStatus.FAILURECODE, null, "Mobile Number is empty...");
+		}
+		
+	}
+
+	@Override
+	public Response updateProfilePic(String mobileNumber, String profilePicture) {
+		if(mobileNumber!=null)
+		{
+			if(profilePicture!=null)
+			{
+				UserModel user = userRepository.findByMobileNumber(mobileNumber);
+				if(user!=null)
+				{
+					user.setProfilePicture(profilePicture);
+					userRepository.save(user);
+					return new Response(ResponseStatus.FAILURECODE, null, "Profile Picture Updated Successfully...");
+				}
+				else
+				{
+					return new Response(ResponseStatus.FAILURECODE, null, "User does not exist...");
+				}
+			}
+			else
+			{
+				return new Response(ResponseStatus.FAILURECODE, null, "Image is empty...");
 			}
 		}
 		else

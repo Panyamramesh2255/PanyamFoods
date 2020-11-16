@@ -30,6 +30,7 @@ public class UserModel {
 	private boolean isAdmin;
 	private Date creationDate;
 	private Date updationDate;
+	private String profilePicture;
 
 	@ManyToOne(targetEntity = OrderModel.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -38,9 +39,11 @@ public class UserModel {
 	public UserModel() {
 		super();
 	}
+	
 
 	public UserModel(String fullName, String villageName, String mobileNumber, String password, String email,
-			boolean isLogin, boolean isAdmin, Date creationDate, Date updationDate, List<OrderModel> orders) {
+			boolean isLogin, boolean isAdmin, Date creationDate, Date updationDate, String profilePicture,
+			List<OrderModel> orders) {
 		super();
 		this.fullName = fullName;
 		this.villageName = villageName;
@@ -51,11 +54,19 @@ public class UserModel {
 		this.isAdmin = isAdmin;
 		this.creationDate = creationDate;
 		this.updationDate = updationDate;
+		this.profilePicture = profilePicture;
 		this.orders = orders;
 	}
+	
 
-	
-	
+	public String getProfilePicture() {
+		return profilePicture;
+	}
+
+	public void setProfilePicture(String profilePicture) {
+		this.profilePicture = profilePicture;
+	}
+
 	public Date getUpdationDate() {
 		return updationDate;
 	}

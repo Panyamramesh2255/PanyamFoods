@@ -39,7 +39,7 @@ public class UsreController {
 	}
 	
 	@GetMapping("/getuser")
-	public ResponseEntity<Response> getAllUsers(@RequestParam String mobileNumber)
+	public ResponseEntity<Response> getAllUsers(@RequestHeader String mobileNumber)
 	{
 		Response respose = userService.getUser(mobileNumber);
 	  return new ResponseEntity<Response>(respose, HttpStatus.OK);
@@ -49,6 +49,12 @@ public class UsreController {
 	public ResponseEntity<Response> updateUser(@RequestBody UserModel user)
 	{
 		Response response = userService.updateUser(user);
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
+	}
+	@PostMapping("/updateprofilepic")
+	public ResponseEntity<Response> updateProfilePicture(@RequestHeader String mobileNumber, @RequestHeader String profilePicture)
+	{
+		Response response = userService.updateProfilePic(mobileNumber, profilePicture );
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 	
